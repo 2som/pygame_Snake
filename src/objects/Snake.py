@@ -3,16 +3,7 @@ import pygame
 class Snake:
     def __init__(self, screen, rect):
         self.screen = screen
-
         self.rect = rect
-
-        self.directions = {
-            'left': self._move_left,
-            'right': self._move_right,
-            'up': self._move_up,
-            'down': self._move_down
-        }
-
         self.moving_direction = 'left'
 
     def set_moving_direction(self, direction):
@@ -24,12 +15,18 @@ class Snake:
         self.moving_direction = direction
         
     def move(self):
-        self.directions.get(self.moving_direction)()
-        
+        if self.moving_direction == 'left':
+            self._move_left()
+        elif self.moving_direction == 'right':
+            self._move_right()
+        elif self.moving_direction == 'down':
+            self._move_down()
+        elif self.moving_direction == 'up':
+            self._move_up()
         
     def display(self):
         pygame.draw.rect(self.screen, (255, 0, 0), self.rect)
-
+        
     def _move_up(self):
         self.rect.centery -= 1
 
