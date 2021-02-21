@@ -34,19 +34,30 @@ class App:
         ))
 
         self.snake.enlarge(self.blockFacade.createMovableBlock(
-            self.screen.get_rect().centerx,
+            self.screen.get_rect().centerx - self.SETTINGS.blockConfig.get('width'),
+            self.screen.get_rect().centery
+        ))
+
+        self.snake.enlarge(self.blockFacade.createMovableBlock(
+            self.screen.get_rect().centerx - 2 * self.SETTINGS.blockConfig.get('width'),
             self.screen.get_rect().centery
         ))
 
     def run(self):
+        clock = pygame.time.Clock()
+        time = 0
         while True:
-            self.screen.fill((0, 0, 0))
-            self.check_events(pygame.event.get())
-            self.snake.move()
-            self.snake.display()
-            pygame.display.flip()
-
-    
+            time += clock.get_time()
+            if time >= 100:
+                self.screen.fill((0, 0, 0))
+                self.check_events(pygame.event.get())
+                self.snake.move()
+                self.snake.display()
+                pygame.display.flip()
+                time = 0
+            clock.tick(120)
+           
+            
     def check_events(self, events):
         for event in events:
             if event.type == pygame.QUIT:

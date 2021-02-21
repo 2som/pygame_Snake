@@ -12,7 +12,6 @@ class RectFixture:
         self.width = width
         self.height = height
 
-
 blockConfig = {
     "width": 50,
     "height": 50,

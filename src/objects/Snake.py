@@ -12,6 +12,9 @@ class Snake:
             return
         elif direction not in ['left', 'right', 'up', 'down']:
             return 
+        
+        if not self.can_turn(direction):
+            return
 
         self.moving_direction = direction
         
@@ -43,19 +46,40 @@ class Snake:
     def display(self):
         for i in range(0, len(self.body)):
             pygame.draw.rect(self.screen, (255, 0, 0), self.body[i].rect)
+            if (i == 1):
+                pygame.draw.rect(self.screen, (255, 255, 0), self.body[i].rect)
+
 
     def enlarge(self, block):
         self.body.append(block)
-        print(self.body)
+
+    def position_new_part(self, block):
+        last_part = self.body[-1]
+        block.update_position(last_part.prev_x, last_part.prev_y)
+
+    def can_turn(self, direction):
+        if direction == 'right' and self.moving_direction == 'left':
+            return False
+
+        if direction == 'left' and self.moving_direction == 'right':
+            return False
+
+        if direction == 'down' and self.moving_direction == 'up':
+            return False
+
+        if direction == 'up' and self.moving_direction == 'down':
+            return False
+
+        return True
         
     def _move_up(self):
-        self.head.rect.centery -= 1
+        self.head.rect.centery -= 50
 
     def _move_down(self):
-        self.head.rect.centery += 1
+        self.head.rect.centery += 50
 
     def _move_left(self):
-        self.head.rect.centerx -= 1
+        self.head.rect.centerx -= 50
 
     def _move_right(self):
-        self.head.rect.centerx += 1
+        self.head.rect.centerx += 50
