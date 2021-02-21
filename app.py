@@ -28,14 +28,17 @@ class App:
     def initialize_objects(self):
         self.blockFacade = BlockFacade(self.SETTINGS.blockConfig)
         
-        self.snake = Snake(self.screen, self.blockFacade.createBlock(
+        self.snake = Snake(self.screen, self.blockFacade.createMovableBlock(
+            self.screen.get_rect().centerx,
+            self.screen.get_rect().centery
+        ))
+
+        self.snake.enlarge(self.blockFacade.createMovableBlock(
             self.screen.get_rect().centerx,
             self.screen.get_rect().centery
         ))
 
     def run(self):
-        self.screen.fill((0, 0, 0))
-        self.snake.display()
         while True:
             self.screen.fill((0, 0, 0))
             self.check_events(pygame.event.get())
@@ -60,6 +63,5 @@ class App:
         
     def update_screen(self):
         pass
-
 
 App().run()

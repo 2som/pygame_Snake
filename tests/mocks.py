@@ -6,6 +6,16 @@ class ScreenFixture:
         
 
 class RectFixture:
-    def __init__(self, x, y):
+    def __init__(self, x, y, width=50, height=50):
         self.centerx = x
         self.centery = y
+        self.width = width
+        self.height = height
+
+
+blockConfig = {
+    "width": 50,
+    "height": 50,
+    "color1": (0, 255, 0),
+    "color2": (0, 0, 255),
+}
