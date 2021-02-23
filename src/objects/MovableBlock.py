@@ -5,6 +5,7 @@ class MovableBlock(Block):
         super().__init__(blockConfig, x, y)
         self.prev_x = 0
         self.prev_y = 0
+        self.color = blockConfig.get("colors").get("green")
 
     def update_position(self, x, y):
         if not all(

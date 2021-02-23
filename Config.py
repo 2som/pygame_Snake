@@ -5,6 +5,14 @@ class Config:
         self.blockConfig = {
             "width": 50,
             "height": 50,
-            "color1": (0, 255, 0),
-            "color2": (0, 0, 255),
+            "colors": {
+                "red": (255, 0, 0),
+                "blue": (0, 0, 255),
+                "green": (0, 255, 0),
+                "yellow": (240, 230, 0),
+                "grey": (210, 210, 210),
+                "orange": (250, 150, 25)
+            }
         }
+        self.snake_speed = 50
+        

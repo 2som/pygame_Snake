@@ -1,11 +1,13 @@
 import pygame, sys
 
 from Config import Config
+from src.objects.BlockSpawner import BlockSpawner
 from src.objects.Snake import Snake
 from src.objects.BlockFacade import BlockFacade
 
 class App:
     def __init__(self):
+        self.rects = []
         self.setup_settings_and_screen()
         self.initialize_objects()
 
@@ -31,17 +33,14 @@ class App:
         self.snake = Snake(self.screen, self.blockFacade.createMovableBlock(
             self.screen.get_rect().centerx,
             self.screen.get_rect().centery
-        ))
+        ), self.SETTINGS.snake_speed)
 
-        self.snake.enlarge(self.blockFacade.createMovableBlock(
-            self.screen.get_rect().centerx - self.SETTINGS.blockConfig.get('width'),
-            self.screen.get_rect().centery
-        ))
+        new_rect = self.blockFacade.createBlock()
+        self.rects.append(new_rect)
+        self.testSpawn = BlockSpawner(self.screen, self.SETTINGS.blockConfig)
+        self.testSpawn.spawn_block(new_rect)
 
-        self.snake.enlarge(self.blockFacade.createMovableBlock(
-            self.screen.get_rect().centerx - 2 * self.SETTINGS.blockConfig.get('width'),
-            self.screen.get_rect().centery
-        ))
+        self.rects.append(self.snake)
 
     def run(self):
         clock = pygame.time.Clock()
@@ -51,13 +50,11 @@ class App:
             if time >= 100:
                 self.screen.fill((0, 0, 0))
                 self.check_events(pygame.event.get())
-                self.snake.move()
-                self.snake.display()
+                self.update_screen()
                 pygame.display.flip()
                 time = 0
             clock.tick(120)
-           
-            
+             
     def check_events(self, events):
         for event in events:
             if event.type == pygame.QUIT:
@@ -73,6 +70,14 @@ class App:
                     self.snake.set_moving_direction('down')
         
     def update_screen(self):
+        self.snake.move()
+        for rect in self.rects:
+            if isinstance(rect, Snake):
+                pygame.draw.rect(self.screen, rect.head.color, rect.head)
+            else:   
+                pygame.draw.rect(self.screen, rect.color, rect.rect)
+
+    def spawn_rect(self):
         pass
 
 App().run()

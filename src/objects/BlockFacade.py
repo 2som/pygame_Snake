@@ -1,5 +1,7 @@
 from src.objects.Block import Block
 from src.objects.MovableBlock import MovableBlock
+from src.objects.ReverseDirectionsBlock import ReverseDirectionsBlock
+from src.objects.SlowDownBlock import SlowDownBlock
 
 
 class BlockFacade:
@@ -13,5 +15,5 @@ class BlockFacade:
     def createMovableBlock(self, x=0, y=0):
         return MovableBlock(self.blockConfig, x, y)
 
-    def createBlockAtRandomPosition(self):
+    def createSpecialBlock(self, x=0, y=0):
         pass

@@ -1,11 +1,12 @@
 import pygame
 
 class Snake:
-    def __init__(self, screen, movableBlock):
+    def __init__(self, screen, movableBlock, speed):
         self.screen = screen
         self.head = movableBlock
         self.moving_direction = 'left'
-        self.body = [self.head]
+        self.body = [self.head],
+        self.speed = speed
 
     def set_moving_direction(self, direction):
         if not isinstance(direction, str):
@@ -17,6 +18,9 @@ class Snake:
             return
 
         self.moving_direction = direction
+
+    def get_moving_direction(self):
+        return self.moving_direction
         
     def move(self):
         self.save_previous_position()
@@ -42,15 +46,8 @@ class Snake:
             current_block = self.body[i]
             next_block = self.body[i + 1]
             next_block.update_position(current_block.prev_x, current_block.prev_y)
-  
-    def display(self):
-        for i in range(0, len(self.body)):
-            pygame.draw.rect(self.screen, (255, 0, 0), self.body[i].rect)
-            if (i == 1):
-                pygame.draw.rect(self.screen, (255, 255, 0), self.body[i].rect)
 
-
-    def enlarge(self, block):
+    def eat(self, block):
         self.body.append(block)
 
     def position_new_part(self, block):
@@ -73,13 +70,13 @@ class Snake:
         return True
         
     def _move_up(self):
-        self.head.rect.centery -= 50
+        self.head.rect.centery -= self.speed
 
     def _move_down(self):
-        self.head.rect.centery += 50
+        self.head.rect.centery += self.speed
 
     def _move_left(self):
-        self.head.rect.centerx -= 50
+        self.head.rect.centerx -= self.speed
 
     def _move_right(self):
-        self.head.rect.centerx += 50
+        self.head.rect.centerx += self.speed
