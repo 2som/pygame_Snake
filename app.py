@@ -89,6 +89,15 @@ class App:
         self.rects.append(self.current_spawned_rect)
 
     def check_collisions(self):
+        if self.snake.eats_himself():
+            sys.exit()
+
+        if self.snake.head.rect.x > self.SETTINGS.screen_width or self.snake.head.rect.x < 0:
+            sys.exit()
+        
+        if self.snake.head.rect.y > self.SETTINGS.screen_height or self.snake.head.rect.y < 0:
+            sys.exit()
+
         if self.snake.head.rect.colliderect(self.current_spawned_rect.rect):
             self.rects = list(filter(lambda x: self.current_spawned_rect != x, self.rects))
             new_snake_part = self.blockFacade.createMovableBlock()
@@ -97,6 +106,9 @@ class App:
             self.current_spawned_rect = None
 
     def spawn_special_rect(self):
+        pass
+
+    def restart():
         pass
         
 

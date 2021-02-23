@@ -16,6 +16,9 @@ class Block:
 
         self.rect.centerx = x
         self.rect.centery = y
+    
+    def get_position(self):
+        return [self.x, self.y]
 
     def __eq__(self, object):
         if not isinstance(object, Block):

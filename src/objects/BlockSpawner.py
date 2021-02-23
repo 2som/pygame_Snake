@@ -27,8 +27,8 @@ class BlockSpawner:
         return [x, y]
 
     def _get_random_coords(self):
-        x = random.randint(0, self.rules.get("max_x", 1200) - self.blockConfig.get("width", 50) / 2)
-        y = random.randint(0, self.rules.get("max_y", 800) - self.blockConfig.get("width", 50) / 2)
+        x = random.randint(0, self.rules.get("max_x", 1200) - self.blockConfig.get("width", 50))
+        y = random.randint(0, self.rules.get("max_y", 800) - self.blockConfig.get("width", 50))
         return [x, y]
 
     def _check_if_random_coords_are_random_enough(self, x, y):

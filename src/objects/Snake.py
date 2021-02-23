@@ -1,5 +1,3 @@
-import pygame
-
 class Snake:
     def __init__(self, screen, movableBlock, speed):
         self.screen = screen
@@ -49,6 +47,12 @@ class Snake:
 
     def eat(self, block):
         self.body.append(block)
+
+    def eats_himself(self):
+        for rect in self.body[1:]:
+            if rect.rect.colliderect(self.head):
+                return True
+        return False
 
     def position_new_part(self, block):
         last_part = self.body[-1]
