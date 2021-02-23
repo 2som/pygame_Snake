@@ -34,14 +34,9 @@ class App:
             self.screen.get_rect().centerx,
             self.screen.get_rect().centery
         ), self.SETTINGS.snake_speed)
-
-        new_rect = self.blockFacade.createBlock()
-        self.rects.append(new_rect)
-        self.testSpawn = BlockSpawner(self.screen, self.SETTINGS.blockConfig)
-        self.testSpawn.spawn_block(new_rect)
-
-        self.rects.append(self.snake)
-
+        
+        self.spawner = BlockSpawner(self.screen, self.SETTINGS)
+       
     def run(self):
         clock = pygame.time.Clock()
         time = 0

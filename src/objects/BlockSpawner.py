@@ -1,21 +1,17 @@
-import pygame
 import random
 
 class BlockSpawner:
-    def __init__(self, screen, blockConfig):
+    def __init__(self, settings):
         self.rules = {
-            "max_x": pygame.display.get_surface().get_width(),
-            "max_y": pygame.display.get_surface().get_height()
+            "max_x": settings.screen_width,
+            "max_y": settings.screen_height
         }
         self.last_spawned_positions = []
-        self.screen = screen
-        self.blockConfig = blockConfig
+        self.blockConfig = settings.blockConfig
 
-    
     def spawn_block(self, block):
         x, y = self._generate_random_position()
         block.set_position(x, y)
-        pygame.draw.rect(self.screen, block.color, block.rect)
 
     
     def _generate_random_position(self):
