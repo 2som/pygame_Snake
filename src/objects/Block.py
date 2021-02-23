@@ -16,3 +16,9 @@ class Block:
 
         self.rect.centerx = x
         self.rect.centery = y
+
+    def __eq__(self, object):
+        if not isinstance(object, Block):
+            return False
+        return self.rect.centerx == object.rect.centerx and self.rect.centery == object.rect.centery
+        

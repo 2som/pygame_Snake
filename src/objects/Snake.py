@@ -5,7 +5,7 @@ class Snake:
         self.screen = screen
         self.head = movableBlock
         self.moving_direction = 'left'
-        self.body = [self.head],
+        self.body = [self.head]
         self.speed = speed
 
     def set_moving_direction(self, direction):
