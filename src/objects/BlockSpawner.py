@@ -3,8 +3,9 @@ import random
 class BlockSpawner:
     def __init__(self, settings):
         self.rules = {
-            "max_x": settings.screen_width,
-            "max_y": settings.screen_height
+            "max_x": settings.board_width + settings.board_offset,
+            "max_y": settings.board_height + settings.board_offset,
+            "offset": settings.board_offset
         }
         self.last_spawned_positions = []
         self.blockConfig = settings.blockConfig
@@ -27,8 +28,12 @@ class BlockSpawner:
         return [x, y]
 
     def _get_random_coords(self):
-        x = random.randint(0, self.rules.get("max_x", 1200) - self.blockConfig.get("width", 50))
-        y = random.randint(0, self.rules.get("max_y", 800) - self.blockConfig.get("width", 50))
+        x = random.randint(
+            self.rules.get("offset") + self.blockConfig.get("width", 50), 
+            self.rules.get("max_x", 1200) - self.blockConfig.get("width", 50))
+        y = random.randint(
+            self.rules.get("offset") + self.blockConfig.get("width", 50), 
+            self.rules.get("max_y", 800) - self.blockConfig.get("width", 50))
         return [x, y]
 
     def _check_if_random_coords_are_random_enough(self, x, y):

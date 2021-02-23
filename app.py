@@ -4,6 +4,7 @@ from Config import Config
 from src.objects.BlockSpawner import BlockSpawner
 from src.objects.Snake import Snake
 from src.objects.BlockFacade import BlockFacade
+from src.objects.Board import Board
 from src.components.Button import Button
 
 class App:
@@ -13,6 +14,7 @@ class App:
         self.setup_settings_and_screen()
         self.initialize_objects()
         self.state = 1
+        self.score = 0
 
     def setup_settings_and_screen(self):
         pygame.init()
@@ -31,6 +33,14 @@ class App:
         pygame.display.set_caption("Snake")
 
     def initialize_objects(self):
+        self.board = Board(
+            self.SETTINGS.blockConfig.get("colors").get("very_dark_green"),
+            self.SETTINGS.board_offset,
+            self.SETTINGS.board_offset,
+            self.SETTINGS.board_width,
+            self.SETTINGS.board_height
+        )
+
         self.blockFacade = BlockFacade(self.SETTINGS.blockConfig)
         
         self.snake = Snake(self.screen, self.blockFacade.createMovableBlock(
@@ -64,30 +74,30 @@ class App:
         while True:
             if self.state == 1:
                 time += clock.get_time()
+                myfont = pygame.font.SysFont('Arial', 30)
+                textsurface = myfont.render(f'score: {self.score}', False, (255, 255, 255))
+               
                 if time >= 100:
                     if not self.current_spawned_rect:
                         self.spawn_rect()
                     self.screen.fill((0, 0, 0))
+                    self.board.draw(self.screen)
                     self.check_events(pygame.event.get())
                     self.check_collisions()
                     self.update_screen()
-                   
                     time = 0
-
             else:
                 self.screen.fill((0, 0, 0))
                 self.try_again_btn.draw(self.screen)
                 self.quit_button.draw(self.screen)
                 
                 self.check_events(pygame.event.get())
-                    
-                      
-                        
             
+            self.screen.blit(textsurface,(0,0))
             pygame.display.flip()
+            
             clock.tick(100)
                 
-                       
     def check_events(self, events):
         for event in events:
             if event.type == pygame.QUIT:
@@ -129,7 +139,7 @@ class App:
         if self.snake.eats_himself():
             self.state = 0
 
-        if (self.snake_is_outside_of_screen()):
+        if (self.snake_is_outside_of_board()):
             self.state = 0
 
         if self.snake.head.rect.colliderect(self.current_spawned_rect.rect):
@@ -138,17 +148,19 @@ class App:
             self.snake.eat(new_snake_part)
             self.rects.append(new_snake_part)
             self.current_spawned_rect = None
+            self.score += 1
 
     def restart(self):
         self.rects = []
         self.current_spawned_rect = None
         self.initialize_objects()
         self.state = 1
+        self.score = 0
 
-    def snake_is_outside_of_screen(self):
-        return (self.snake.head.rect.x > self.SETTINGS.screen_width or 
-                self.snake.head.rect.x < 0 or 
-                self.snake.head.rect.y > self.SETTINGS.screen_height or 
-                self.snake.head.rect.y < 0)
+    def snake_is_outside_of_board(self):
+        return (self.snake.head.rect.x > self.SETTINGS.board_width + self.SETTINGS.board_offset or 
+                self.snake.head.rect.x < self.SETTINGS.board_offset or 
+                self.snake.head.rect.y > self.SETTINGS.board_height + self.SETTINGS.board_offset or 
+                self.snake.head.rect.y < self.SETTINGS.board_offset)
     
 App().run()

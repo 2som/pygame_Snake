@@ -2,6 +2,9 @@ class Config:
     def __init__(self):
         self.screen_width = 1200
         self.screen_height = 800
+        self.board_width = 1000
+        self.board_height = 600
+        self.board_offset = 100
         self.blockConfig = {
             "width": 25,
             "height": 25,
@@ -11,7 +14,8 @@ class Config:
                 "green": (0, 255, 0),
                 "yellow": (240, 230, 0),
                 "grey": (210, 210, 210),
-                "orange": (250, 150, 25)
+                "orange": (250, 150, 25),
+                "very_dark_green": (44, 54, 45)
             }
         }
         self.snake_speed = 25
