@@ -1,2 +1,0 @@
-class ReverseDirectionsBlock:
-    pass

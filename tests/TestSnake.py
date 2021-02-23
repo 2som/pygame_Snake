@@ -110,6 +110,40 @@ class TestSnake:
 
         assert snake.get_moving_direction() == 'left'
 
+    def test_snake_slows_down(self):
+        snake = self.there_is_snake_object()
+        snake.speed = 50
+
+        snake.slow_down()
+
+        assert snake.speed == 30 and snake.state == 'slowed'
+
+    def test_snake_is_not_slowing_down_when_already_slowed_down(self):
+        snake = self.there_is_snake_object()
+        snake.speed = 50
+        snake.state = 'accelerated'
+
+        snake.slow_down()
+
+        assert snake.speed == 50 and snake.state == 'slowed'
+
+    def test_snake_speeds_up(self):
+        snake = self.there_is_snake_object()
+        snake.speed = 50
+
+        snake.speed_up()
+
+        assert snake.speed == 70 and snake.state == 'accelerated'
+
+    def test_snake_is_not_speeding_up_when_already_speeded_up(self):
+        snake = self.there_is_snake_object()
+        snake.speed = 50
+        snake.state = 'accelerated'
+
+        snake.speed_up()
+
+        assert snake.speed == 50 and snake.state == 'accelerated'
+
 
     def there_is_snake_object(self):
-        return Snake(mocks.ScreenFixture(),  MovableBlock(mocks.blockConfig, 100, 100))
+        return Snake(mocks.ScreenFixture(),  MovableBlock(mocks.blockConfig, 100, 100), 50)

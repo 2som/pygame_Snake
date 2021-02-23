@@ -1,4 +1,4 @@
-import pygame, sys
+import pygame, sys, random
 
 from Config import Config
 from src.objects.BlockSpawner import BlockSpawner
@@ -9,7 +9,7 @@ class App:
     def __init__(self):
         self.rects = []
         self.current_spawned_rect = None
-        self.current_spawner_special_rect = None
+        self.current_spawned_special_rect = None
         self.setup_settings_and_screen()
         self.initialize_objects()
 
@@ -44,18 +44,35 @@ class App:
     def run(self):
         clock = pygame.time.Clock()
         time = 0
+        special_block_spawn_time = 0
+        duration_of_snake_state_change = 0
         while True:
+            if self.snake.state != 'normal':
+                duration_of_snake_state_change += clock.get_time()
             time += clock.get_time()
+            special_block_spawn_time += clock.get_time()
             if time >= 100:
                 if not self.current_spawned_rect:
                     self.spawn_rect()
+                if not self.current_spawned_special_rect:
+                    self.spawn_special_rect()
+
                 self.screen.fill((0, 0, 0))
                 self.check_events(pygame.event.get())
                 self.check_collisions()
                 self.update_screen()
                 pygame.display.flip()
                 time = 0
-            clock.tick(120)
+            if duration_of_snake_state_change >= 1000:
+                self.snake.reset_state()
+                duration_of_snake_state_change = 0
+
+            if special_block_spawn_time >= 5000:
+                self.rects = list(filter(lambda x: self.current_spawned_special_rect != x, self.rects))
+                self.current_spawned_special_rect = None
+                special_block_spawn_time = 0
+
+            clock.tick(100)
              
     def check_events(self, events):
         for event in events:
@@ -90,12 +107,11 @@ class App:
 
     def check_collisions(self):
         if self.snake.eats_himself():
+            print("snake eats himself")
             sys.exit()
 
-        if self.snake.head.rect.x > self.SETTINGS.screen_width or self.snake.head.rect.x < 0:
-            sys.exit()
-        
-        if self.snake.head.rect.y > self.SETTINGS.screen_height or self.snake.head.rect.y < 0:
+        if (self.snake_is_outside_of_screen()):
+            print("snake outside")
             sys.exit()
 
         if self.snake.head.rect.colliderect(self.current_spawned_rect.rect):
@@ -104,12 +120,34 @@ class App:
             self.snake.eat(new_snake_part)
             self.rects.append(new_snake_part)
             self.current_spawned_rect = None
+            
+
+        if self.snake.head.rect.colliderect(self.current_spawned_special_rect):
+            self.rects = list(filter(lambda x: self.current_spawned_special_rect != x, self.rects))
+            self.snake.eat(self.current_spawned_special_rect)
+            self.current_spawned_special_rect = None
 
     def spawn_special_rect(self):
-        pass
+        type = random.choice(['slowdown', 'speedup'])
+
+        if type == 'slowdown':
+            self.current_spawned_special_rect = self.blockFacade.createSlowDownBlock()
+            self.spawner.spawn_block(self.current_spawned_special_rect)
+            self.rects.append(self.current_spawned_special_rect)
+        
+        elif type == 'speedup':
+            self.current_spawned_special_rect = self.blockFacade.createSpeedUpBlock()
+            self.spawner.spawn_block(self.current_spawned_special_rect)
+            self.rects.append(self.current_spawned_special_rect)
 
     def restart():
         pass
-        
+
+    def snake_is_outside_of_screen(self):
+        return (self.snake.head.rect.x > self.SETTINGS.screen_width or 
+                self.snake.head.rect.x < 0 or 
+                self.snake.head.rect.y > self.SETTINGS.screen_height or 
+                self.snake.head.rect.y < 0)
+    
 
 App().run()
