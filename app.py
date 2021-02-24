@@ -86,8 +86,8 @@ class App:
                
                 if time >= 100:
                     self.check_events(pygame.event.get())
-                    self.check_collisions()
                     self.update_screen()
+                    self.check_collisions()
                     time = 0
             else:
                 self.screen.fill((0, 0, 0))
