@@ -1,5 +1,7 @@
 import random
 
+from src.objects.Block import Block
+
 class BlockSpawner:
     def __init__(self, settings):
         self.rules = {
@@ -8,13 +10,16 @@ class BlockSpawner:
             "offset": settings.board_offset
         }
         self.last_spawned_positions = []
-        self.blockConfig = settings.blockConfig
+        self.block_config = settings.block_config
 
     def spawn_block(self, block):
+        if not isinstance(block, Block):
+            raise TypeError("Given block is not type of Block")
+        
         x, y = self._generate_random_position()
+        
         block.set_position(x, y)
 
-    
     def _generate_random_position(self):
         x, y = self._get_random_coords()
         while not self._check_if_random_coords_are_random_enough(x, y):
@@ -29,11 +34,11 @@ class BlockSpawner:
 
     def _get_random_coords(self):
         x = random.randint(
-            self.rules.get("offset") + self.blockConfig.get("width", 50), 
-            self.rules.get("max_x", 1200) - self.blockConfig.get("width", 50))
+            self.rules.get("offset") + self.block_config.get("width", 50), 
+            self.rules.get("max_x", 1200) - self.block_config.get("width", 50))
         y = random.randint(
-            self.rules.get("offset") + self.blockConfig.get("width", 50), 
-            self.rules.get("max_y", 800) - self.blockConfig.get("width", 50))
+            self.rules.get("offset") + self.block_config.get("width", 50), 
+            self.rules.get("max_y", 800) - self.block_config.get("width", 50))
         return [x, y]
 
     def _check_if_random_coords_are_random_enough(self, x, y):

@@ -7,9 +7,9 @@ class BlockFacade:
         self.blocks = []
         self.blockConfig = blockConfig
     
-    def createBlock(self, x=0, y=0):
+    def create_block(self, x=0, y=0):
         return Block(self.blockConfig, x, y)
     
-    def createMovableBlock(self, x=0, y=0):
+    def create_movable_block(self, x=0, y=0):
         return MovableBlock(self.blockConfig, x, y)
         

@@ -10,9 +10,10 @@ class Snake:
 
     def set_moving_direction(self, direction):
         if not isinstance(direction, str):
-            return
+            raise TypeError('Direction must be str')
+        
         elif direction not in ['left', 'right', 'up', 'down']:
-            return 
+            raise NotImplementedError(f'Snake dont know how to move {direction}')
         
         if not self.can_turn(direction):
             return
@@ -33,8 +34,6 @@ class Snake:
             self._move_down()
         elif self.moving_direction == 'up':
             self._move_up()
-        else:
-            return
 
         self.update_body()
 
