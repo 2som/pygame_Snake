@@ -1,3 +1,4 @@
+import pytest
 import tests.mocks as mocks
 from src.objects.Snake import Snake
 from src.objects.MovableBlock import MovableBlock
@@ -17,18 +18,20 @@ class TestSnake:
         assert snake.moving_direction == 'left'
 
     def test_snake_invalid_direction(self):
-        snake = self.there_is_snake_object()
-        
-        snake.set_moving_direction(123)
-        snake.set_moving_direction('d')
+        with pytest.raises(TypeError):
+            snake = self.there_is_snake_object()
+            
+            snake.set_moving_direction(123)
+            snake.set_moving_direction('d')
         
         assert snake.moving_direction == 'left'
 
     def test_snake_remembers_last_direction_when_invalid_direction_given(self):
-        snake = self.there_is_snake_object()
-        
-        snake.set_moving_direction('up')
-        snake.set_moving_direction(123)
+        with pytest.raises(TypeError):
+            snake = self.there_is_snake_object()
+            
+            snake.set_moving_direction('up')
+            snake.set_moving_direction(123)
 
         assert snake.moving_direction == 'up'
 
